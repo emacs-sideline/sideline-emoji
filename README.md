@@ -7,6 +7,8 @@
 
 [![CI](https://github.com/emacs-sideline/sideline-emoji/actions/workflows/test.yml/badge.svg)](https://github.com/emacs-sideline/sideline-emoji/actions/workflows/test.yml)
 
+![demo](etc/demo.png)
+
 ## 🔨 Quickstart
 
 ```elisp
