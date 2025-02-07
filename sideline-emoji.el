@@ -6,7 +6,7 @@
 ;; Maintainer: Shen, Jen-Chieh <jcs090218@gmail.com>
 ;; URL: https://github.com/emacs-sideline/sideline-emoji
 ;; Version: 0.1.0
-;; Package-Requires: ((emacs "27.1") (sideline "0.1.0") (emojify "1.2.1"))
+;; Package-Requires: ((emacs "27.1") (sideline "0.1.0") (emojify "1.2.1") (ht "2.4"))
 ;; Keywords: convenience sideline emoji
 
 ;; This file is not part of GNU Emacs.
@@ -40,6 +40,7 @@
 ;;; Code:
 
 (require 'emojify)
+(require 'ht)
 (require 'sideline)
 
 (defgroup sideline-emoji nil
@@ -48,19 +49,40 @@
   :group 'tool
   :link '(url-link :tag "Repository" "https://github.com/emacs-sideline/sideline-emoji"))
 
+(defface sideline-emoji
+  '((t :foreground "#828282"
+       :background unspecified
+       :italic t))
+  "Face for emoji info."
+  :group 'sideline-emoji)
+
 ;;;###autoload
 (defun sideline-emoji (command)
   "Backend for sideline.
 
 Argument COMMAND is required in sideline backend."
   (cl-case command
-    (`candidates (cons :async #'sideline-emoji--show))))
+    (`candidates (cons :async #'sideline-emoji--show))
+    (`face 'sideline-emoji)))
+
+(defun sideline-emoji--display (emoji)
+  "Return the display text for EMOJI."
+  (when-let* ((data (ignore-errors (emojify-get-emoji emoji)))
+              (name (ht-get (emojify-get-emoji emoji) "name"))
+              (emo (ht-get (emojify-get-emoji emoji) "emoji"))
+              (style (ht-get (emojify-get-emoji emoji) "style")))
+    (format "%s %s (%s)" emo name style)))
+
+(defun sideline-emoji--display-char (ch)
+  "Return the display text for character (CH)."
+  (when-let* ((emoji (ignore-errors (string ch))))
+    (sideline-emoji--display emoji)))
 
 (defun sideline-emoji--show (callback &rest _)
   "Execute CALLBACK to display with sideline."
-  (when-let* ((text (sideline-color--thing-at-point 'symbol t))
-              (color (color-values text))
-              (display (concat (propertize sideline-color-text 'font-lock-face `(:foreground ,text)) " " text)))
+  (emojify-create-emojify-emojis)
+  (when-let* ((display (or (sideline-emoji--display-char (char-after))
+                           (sideline-emoji--display-char (char-before)))))
     (funcall callback (list display))))
 
 (provide 'sideline-emoji)
