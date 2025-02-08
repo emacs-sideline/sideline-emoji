@@ -15,7 +15,7 @@
 (use-package sideline-emoji
   :hook (after-init . sideline-mode)
   :init
-  (setq sideline-backends-right '(sideline-emoji)))
+  (setq sideline-backends-left '((sideline-emoji . up))))
 ```
 
 ## 🛠️ Contribute
