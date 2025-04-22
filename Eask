@@ -1,3 +1,5 @@
+;; -*- mode: eask; lexical-binding: t -*-
+
 (package "sideline-emoji"
          "0.1.0"
          "Show emoji information with sideline")
