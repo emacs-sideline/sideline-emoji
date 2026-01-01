@@ -1,6 +1,6 @@
 ;;; sideline-emoji.el --- Show emoji information with sideline  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2025  Shen, Jen-Chieh
+;; Copyright (C) 2025-2026  Shen, Jen-Chieh
 
 ;; Author: Shen, Jen-Chieh <jcs090218@gmail.com>
 ;; Maintainer: Shen, Jen-Chieh <jcs090218@gmail.com>
